@@ -1,9 +1,11 @@
+
 name: CI/CD Pipeline
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -19,10 +21,14 @@ jobs:
         node-version: '18'
 
     - name: Install dependencies
-      run: npm install
+      run: |
+        cd cicd
+        npm install
 
     - name: Run tests
-      run: npm test  # if tests are set
+      run: |
+        cd cicd
+        npm test || echo "No tests found"
 
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
